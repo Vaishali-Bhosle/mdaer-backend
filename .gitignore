@@ -1,5 +1,4 @@
-# Node modules
-node_modules/
+
 
 # Environment variables
 .env
@@ -13,3 +12,5 @@ logs/
 *.swp
 .idea/
 .vscode/
+
+samplefile
