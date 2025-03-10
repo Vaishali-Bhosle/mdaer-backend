@@ -1,7 +1,6 @@
-
-
 # Environment variables
 .env
+
 
 # Logs
 logs/
@@ -12,8 +11,3 @@ logs/
 *.swp
 .idea/
 .vscode/
-
-samplefile
-
-
-This is Tejus
