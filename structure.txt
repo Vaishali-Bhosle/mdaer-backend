@@ -1,0 +1,25 @@
+.
+├── db.sqlite3
+├── manage.py
+├── mdaerpUser
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── auth_middleware.py
+│   ├── keycloakSettings.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── utils.py
+│   └── wsgi.py
+├── requirements.txt
+├── structure.txt
+└── user
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── models.py
+    ├── serializers.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+
+2 directories, 20 files

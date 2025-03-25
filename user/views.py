@@ -1,33 +1,12 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 from .serializers import *
+from .utils import send_otp, verify_otp
 
-# Create your views here.
-
-# def loginView(APIView):
-#     def post(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-
-#         if not username or not password:
-#             return Response({"success": False, "message": "Username and password are required"}, status=status.HTTP_400_BAD_REQUEST)
-
-#         user = User.objects.filter(username=username, password=password)
-#         userSerializer = UserSerializer(user, many=True)
-
-
-
-#         if user:
-#             return Response({"success": True}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({"success": False}, status=status.HTTP_401_UNAUTHORIZED)
-        
-
-
-class UserLogin(APIView):
+class SignIn(APIView):
      def post(self,request):
         try:
             username = request.data.get('username')
@@ -50,8 +29,7 @@ class UserLogin(APIView):
 
 
 
-
-class UserRegister(APIView):
+class SignUp(APIView):
      def post(self,request):
         try:
             data=request.data
@@ -75,3 +53,74 @@ class UserRegister(APIView):
                     return Response({"Message": user_Serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"Message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class Profile(APIView):
+    def get(self,request):
+
+        return Response({"Message": 'User Profile'}, status=status.HTTP_200_OK)
+        
+
+
+class ForgotPassword(APIView):
+    def post(self,request):
+
+        return Response({"Message": 'User Forgot Password'}, status=status.HTTP_200_OK)
+        
+
+
+class Signout(APIView):
+    def post(self,request):
+
+        return Response({"Message": 'User Signout'}, status=status.HTTP_200_OK)
+
+
+
+class SendOTP(APIView):
+    def post(self, request):
+        data = request.data
+        email = data.get('email')
+        phone = data.get('phone')
+
+        if not email and not phone:
+            return Response({"Message": "Email or Phone is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email) if email else User.objects.get(username=data.get("username"), email=email)
+            to = phone if phone else email
+
+            status = send_otp(to, "sms" if phone else "email")
+            return Response({"Message": "OTP sent successfully", "status": status}, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({"Message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"Message": f"Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class VerifyOTP(APIView):
+    def post(self, request):
+        data = request.data
+        email = data.get('email')
+        phone = data.get('phone')
+        otp = data.get('otp')
+
+        if not (email or phone) or not otp:
+            return Response({"Message": "Email/Phone and OTP are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email) if email else User.objects.get(username=data.get("username"), email=email)
+            to = phone if phone else email
+
+            status = verify_otp(to, otp)
+            if status == "approved":
+                return Response({"Message": "OTP verified successfully"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"Message": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            return Response({"Message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"Message": f"Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

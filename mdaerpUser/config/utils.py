@@ -2,7 +2,7 @@
 # from .serializers import *
 # from enum import Enum
 # import hashlib
-from keycloak import KeycloakOpenID, KeycloakOpenIDConnection, KeycloakAdmin
+from mdaerpUser.config.keycloak import KeycloakOpenID, KeycloakOpenIDConnection, KeycloakAdmin
 from django.conf import settings
 
 # def verify_member_otp(aadhar_number, otp):

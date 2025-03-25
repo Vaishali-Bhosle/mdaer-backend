@@ -2,7 +2,7 @@ import logging
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
-from keycloak import KeycloakOpenID
+from mdaerpUser.config.keycloak import KeycloakOpenID
 from rest_framework import status
 
 logger = logging.getLogger(_name_)

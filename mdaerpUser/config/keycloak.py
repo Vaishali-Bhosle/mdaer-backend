@@ -1,0 +1,10 @@
+import os
+
+KEYCLOAK_CONFIG = {
+    'REALM': os.getenv('KEYCLOAK_REALM'),
+    'CLIENT_ID': os.getenv('KEYCLOAK_CLIENT_ID'),
+    'SERVER_URL': os.getenv('KEYCLOAK_SERVER_URL'),
+    'CLIENT_SECRET': os.getenv('KEYCLOAK_CLIENT_SECRET_KEY'),
+    'ADMIN_USER': os.getenv('KEYCLOAK_TEST_ADMIN_USER'),
+    'ADMIN_PASSWORD': os.getenv('KEYCLOAK_TEST_ADMIN_PASSWORD'),
+}
